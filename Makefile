@@ -11,7 +11,8 @@ NAME		=		test
 CC		=		g++
 FLAGS		=		-Wall -Wextra -Werror
 
-SRCS		=		test.cpp
+SRCS		=		test.cpp \
+				EntityManager.cpp
 
 OBJDIR		=		obj
 OBJS		=		$(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
@@ -42,7 +43,7 @@ kill:
 
 re:
 	@make -s kill
-	@make
+	@make -s
 
 r:
 	@make -s
