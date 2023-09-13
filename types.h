@@ -9,7 +9,7 @@
 # define MAX_COMPONENTS	32
 
 using Entity = std::uint32_t;
-using Component = std::uint8_t;
+using ComponentID = std::uint8_t;
 using Signature = std::bitset<MAX_COMPONENTS>;
 
 #endif

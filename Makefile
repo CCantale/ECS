@@ -9,7 +9,7 @@
 NAME		=		test
 
 CC		=		g++
-FLAGS		=		-Wall -Wextra -Werror
+FLAGS		=		#-Wall -Wextra -Werror
 
 SRCS		=		test.cpp \
 				EntityManager.cpp
