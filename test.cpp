@@ -54,7 +54,13 @@ int	main(void)
 	if (speedArray.getData(carl))
 		std::cout << "Carl's speed = " << speedArray.getData(carl)->speed << std::endl;
 	else
-		std::cout << "Component erased." << std::endl;
+		std::cout << "Component Speed erased." << std::endl;
+	nameArray.erase(carl);
+	if (nameArray.getData(carl))
+		std::cout << "Carl's name = " << nameArray.getData(carl)->name << std::endl;
+	else
+		std::cout << "Component Name erased." << std::endl;
+
 /*
 	std::cout << "Entities nbr = " << EntityManager::getLivingEntities() << std::endl;
 	std::cout << "Bob = " << bob << std::endl;

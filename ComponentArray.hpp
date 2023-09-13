@@ -47,18 +47,22 @@ class ComponentArray
 		short	makeSpace(unsigned int position)
 		{
 			T	*copy;
-			T	*whereToMakeSpace;
 			unsigned int	spaceToMake;
 
-			whereToMakeSpace = _array.data() + position;
 			spaceToMake = sizeof(T) * (_size - position);
 			if (spaceToMake == 0)
 				return (SUCCESS);
 			copy = new T[spaceToMake];
 			if (!copy)
 				return (FAIL);
-			std::memcpy(copy, whereToMakeSpace, spaceToMake);
-			std::memcpy(whereToMakeSpace + 1, copy, spaceToMake);
+			for (unsigned int i = 0; i < spaceToMake; ++i)
+			{
+				copy[i] = _array[position + i];
+			}
+			for (unsigned int i = 0; i < spaceToMake; ++i)
+			{
+				_array[position + i + 1] = copy[i];
+			}
 
 			delete (copy);
 			return (SUCCESS);
@@ -72,7 +76,7 @@ class ComponentArray
 
 			if (_size == 0)
 			{
-				std::memcpy(_array.data(), &component, sizeof(T));
+				_array[0] = component;
 				++_size;
 				_signature = _array[0].signature; // gets component's signature
 				return ;
@@ -80,7 +84,7 @@ class ComponentArray
 			whereToInsert = binarySearch(component.owner);
 			if (makeSpace(whereToInsert) == SUCCESS)
 			{
-				std::memcpy(_array.data() + whereToInsert, &component, sizeof(T));
+				_array[whereToInsert] = component;
 				++_size;
 			}
 		}
@@ -92,7 +96,10 @@ class ComponentArray
 			whereToErase = binarySearch(entity);
 			if (_array[whereToErase].owner != entity) // return if didn't find the right component
 				return ;
-			std::memcpy(_array.data() + whereToErase, _array.data() + whereToErase + 1, _size - (whereToErase + 1));
+			for (unsigned int i = whereToErase; i < _size - 1; ++i)
+			{
+				_array[i] = _array[i + 1];
+			}
 			--_size;
 		}
 

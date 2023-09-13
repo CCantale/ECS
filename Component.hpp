@@ -3,8 +3,9 @@
 
 typedef struct s_Component
 {
-		Signature	signature;
 		Entity		owner;	
+		Signature	signature;
+
 } Component;
 
 #endif
