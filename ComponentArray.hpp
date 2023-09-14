@@ -1,7 +1,6 @@
 #ifndef COMPONENTARRAY_HPP
 # define COMPONENTARRAY_HPP
 
-# include <cstring>
 # include <array>
 # include "EntityManager.hpp"
 # include "Component.hpp"
@@ -9,8 +8,16 @@
 # define SUCCESS	0
 # define FAIL		1
 
+// An interface is needed to later group multiple different ComponentArrays in a single array
+class IComponentArray
+{
+	public:
+		virtual 	~IComponentArray(void) {}
+		virtual void	onEntityDestroyed(Entity entity) = 0;
+};
+
 template <typename T>
-class ComponentArray 
+class ComponentArray : public IComponentArray
 {
 	private:
 		std::array<T, MAX_ENTITIES>	_array;
@@ -93,13 +100,13 @@ class ComponentArray
 			unsigned int	whereToErase;
 
 			whereToErase = binarySearch(entity);
-			if (_array[whereToErase].owner != entity) // return if didn't find the right component
-				return ;
+			whereToErase += MAX_ENTITIES * (_array[whereToErase].owner != entity); // inhibits the following loop in case the entity was not found
+			std::cout << "WHERE = " << whereToErase << std::endl;
 			for (unsigned int i = whereToErase; i < _size - 1; ++i)
 			{
 				_array[i] = _array[i + 1];
 			}
-			--_size;
+			_size -= (whereToErase < MAX_ENTITIES); // only decreases _size when the binary search was successful
 		}
 
 		T	*getData(Entity entity)
@@ -112,7 +119,7 @@ class ComponentArray
 			return (&_array[position]);
 		}
 
-		void	onEntityDestroyed(Entity entity)
+		void	onEntityDestroyed(Entity entity) override
 		{
 			erase(entity);
 		}
@@ -125,6 +132,7 @@ class ComponentArray
 				std::cout << std::endl;
 				std::cout << "entity = " << _array[i].owner << std::endl;
 				std::cout << "signature = " << _array[i].signature << std::endl;
+				_array[i].print();
 				std::cout << std::endl;
 			}
 		}
