@@ -22,17 +22,15 @@ class ComponentArray
 		// for the insertion of a new component for the provided entity.
 		unsigned int	binarySearch(Entity entity)
 		{
-			unsigned int	low;
-			unsigned int	high;
-			unsigned int	last;
-			unsigned int	ret;
+			long	low;
+			long	high;
+			long	ret;
 
 			low = 0;
 			high = _size - 1;
 			ret = 0;
 			while (low <= high)
 			{
-				last = ret;
 				ret = low + (high - low) / 2;
 				if (_array[ret].owner == entity)
 					return (ret);
@@ -41,15 +39,15 @@ class ComponentArray
 				else
 					low = ret + 1;
 			}
-			return (ret + (last > ret));
+			return (ret + (entity > _array[ret].owner));
 		}
 
 		short	makeSpace(unsigned int position)
 		{
-			T	*copy;
+			T		*copy;
 			unsigned int	spaceToMake;
 
-			spaceToMake = sizeof(T) * (_size - position);
+			spaceToMake = _size - position;
 			if (spaceToMake == 0)
 				return (SUCCESS);
 			copy = new T[spaceToMake];
@@ -64,7 +62,7 @@ class ComponentArray
 				_array[position + i + 1] = copy[i];
 			}
 
-			delete (copy);
+			delete [] (copy);
 			return (SUCCESS);
 		}
 
@@ -78,11 +76,12 @@ class ComponentArray
 			{
 				_array[0] = component;
 				++_size;
-				_signature = _array[0].signature; // gets component's signature
+				_signature = _array[0].signature; // gets component's signature. this acquisition method should change in the future
 				return ;
 			}
 			whereToInsert = binarySearch(component.owner);
-			if (makeSpace(whereToInsert) == SUCCESS)
+			if (component.owner != _array[whereToInsert].owner // check that we didn't already have this entity-component couple
+				&& makeSpace(whereToInsert) == SUCCESS)
 			{
 				_array[whereToInsert] = component;
 				++_size;
@@ -110,7 +109,7 @@ class ComponentArray
 			if (_size == 0 || (EntityManager::getSignature(entity) & _signature) == 0)
 				return (NULL);
 			position = binarySearch(entity);
-				return (&_array[position]);
+			return (&_array[position]);
 		}
 
 		void	onEntityDestroyed(Entity entity)
@@ -123,8 +122,10 @@ class ComponentArray
 			std::cout << "size = " << _size << std::endl; 
 			for (unsigned int i = 0; i < _size; ++i)
 			{
+				std::cout << std::endl;
 				std::cout << "entity = " << _array[i].owner << std::endl;
 				std::cout << "signature = " << _array[i].signature << std::endl;
+				std::cout << std::endl;
 			}
 		}
 

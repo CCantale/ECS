@@ -23,7 +23,7 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS)
-	@$(CC) $^ -o $(NAME)
+	@$(CC) -g $^ -o $(NAME)
 	@echo test successfully compiled!
 
 $(OBJS): $(OBJDIR)/%.o: %.cpp

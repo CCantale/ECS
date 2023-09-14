@@ -26,6 +26,7 @@ int	main(void)
 
 	speedArray.insert(speed);
 	EntityManager::setSignature(carl, 3);
+	EntityManager::setSignature(bob, 3);
 	std::cout << "Component inserted" << std::endl;
 
 	std::cout << "Carl's speed = " << speedArray.getData(carl)->speed << std::endl;
@@ -50,17 +51,94 @@ int	main(void)
 
 	std::cout << "Carl's name = " << nameArray.getData(carl)->name << std::endl;
 
+
+
+	Name	bobName;
+
+	bobName.owner = bob;
+	bobName.signature = 2;
+	bobName.name = "Bob";
+	nameArray.insert(bobName);
+	std::cout << "Bob's name inserted" << std::endl;
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	std::cout << "Bob's name = " << nameArray.getData(bob)->name << std::endl;
+
+
+	nameArray.check();
 	speedArray.erase(carl);
+	EntityManager::setSignature(carl, 2);
 	if (speedArray.getData(carl))
 		std::cout << "Carl's speed = " << speedArray.getData(carl)->speed << std::endl;
 	else
 		std::cout << "Component Speed erased." << std::endl;
 	nameArray.erase(carl);
+	EntityManager::setSignature(carl, 0);
 	if (nameArray.getData(carl))
 		std::cout << "Carl's name = " << nameArray.getData(carl)->name << std::endl;
 	else
 		std::cout << "Component Name erased." << std::endl;
 
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	Name	aName;
+	Name	bName;
+	Name	cName;
+	Name	sName;
+	Entity steve = EntityManager::newID();
+	if (carl != NULL_ENTITY)
+		std::cout << "Carl created." << std::endl;
+
+	aName.owner = bob;
+	aName.signature = 2;
+	aName.name = "Lal";
+	bName.owner = carl;
+	bName.signature = 2;
+	bName.name = "Laaal";
+	cName.owner = carl;
+	cName.signature = 2;
+	cName.name = "Lal";
+	sName.owner = steve;
+	sName.signature = 2;
+	sName.name = "Weeee";
+	EntityManager::setSignature(carl, 2);
+	EntityManager::setSignature(steve, 2);
+	
+	nameArray.insert(aName);
+	nameArray.insert(bName);
+	nameArray.insert(cName);
+	nameArray.insert(sName);
+	std::cout << "Bob's name = " << nameArray.getData(bob)->name << std::endl;
+	std::cout << "Carl's name = " << nameArray.getData(carl)->name << std::endl;
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	nameArray.erase(carl);
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	nameArray.insert(bName);
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	nameArray.erase(carl);
+	nameArray.erase(bob);
+	std::cout << "DA QUI >" << std::endl;
+	nameArray.insert(aName);
+	nameArray.insert(bName);
+	nameArray.insert(cName);
+	nameArray.insert(sName);
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	nameArray.erase(carl);
+	std::cout << "CARL" << std::endl;
+	Entity	newGuy = EntityManager::newID();
+	EntityManager::setSignature(newGuy, 2);
+	sName.owner = newGuy;
+	sName.name = "NEW";
+	nameArray.insert(sName);
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
+	nameArray.insert(bName);
+	std::cout << "Name check:" << std::endl;
+	nameArray.check();
 /*
 	std::cout << "Entities nbr = " << EntityManager::getLivingEntities() << std::endl;
 	std::cout << "Bob = " << bob << std::endl;
