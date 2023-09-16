@@ -39,14 +39,14 @@ class ComponentArray : public IComponentArray
 			while (low <= high)
 			{
 				ret = low + (high - low) / 2;
-				if (_array[ret].owner == entity)
+				if (_array[ret]._owner == entity)
 					return (ret);
-				if (_array[ret].owner > entity)
+				if (_array[ret]._owner > entity)
 					high = ret - 1;
 				else
 					low = ret + 1;
 			}
-			return (ret + (entity > _array[ret].owner));
+			return (ret + (entity > _array[ret]._owner));
 		}
 
 		short	makeSpace(unsigned int position)
@@ -74,20 +74,26 @@ class ComponentArray : public IComponentArray
 		}
 
 	public:
+
+		void	init(T const &component)
+		{
+			if (_size > 0)
+				return ;
+			_array[0] = component;
+			++_size;
+			_signature = component._signature; // gets component's signature. this acquisition method should change in the future
+			_name = component._name;
+		}
+
 		
 		void	insert(T const &component)
 		{
 			unsigned int	whereToInsert;
 
 			if (_size == 0)
-			{
-				_array[0] = component;
-				++_size;
-				_signature = _array[0].signature; // gets component's signature. this acquisition method should change in the future
 				return ;
-			}
-			whereToInsert = binarySearch(component.owner);
-			if (component.owner != _array[whereToInsert].owner // check that we didn't already have this entity-component couple
+			whereToInsert = binarySearch(component._owner);
+			if (component._owner != _array[whereToInsert]._owner // check that we didn't already have this entity-component couple
 				&& makeSpace(whereToInsert) == SUCCESS)
 			{
 				_array[whereToInsert] = component;
@@ -100,7 +106,7 @@ class ComponentArray : public IComponentArray
 			unsigned int	whereToErase;
 
 			whereToErase = binarySearch(entity);
-			whereToErase += MAX_ENTITIES * (_array[whereToErase].owner != entity); // inhibits the following loop in case the entity was not found
+			whereToErase += MAX_ENTITIES * (_array[whereToErase]._owner != entity); // inhibits the following loop in case the entity was not found
 			std::cout << "WHERE = " << whereToErase << std::endl;
 			for (unsigned int i = whereToErase; i < _size - 1; ++i)
 			{
@@ -130,9 +136,9 @@ class ComponentArray : public IComponentArray
 			for (unsigned int i = 0; i < _size; ++i)
 			{
 				std::cout << std::endl;
-				std::cout << "entity = " << _array[i].owner << std::endl;
-				std::cout << "signature = " << _array[i].signature << std::endl;
-				_array[i].print();
+				std::cout << "entity = " << _array[i]._owner << std::endl;
+				std::cout << "signature = " << _array[i]._signature << std::endl;
+				_array[i].inspect();
 				std::cout << std::endl;
 			}
 		}

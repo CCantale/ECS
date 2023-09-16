@@ -8,7 +8,7 @@ typedef struct s_Name : public Component
 {
 	std::string	name;
 
-	void	print(void) override
+	void	inspect(void) override
 	{
 		std::cout << "name = " << name << std::endl;
 	}

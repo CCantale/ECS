@@ -1,14 +1,15 @@
 #ifndef COMPONENTMANAGER_HPP
 # define COMPONENTMANAGER_HPP
 
-# include <array>
+# include <vector>
+# include <cstdbool>
 # include "types.h"
 # include "ComponentArray.hpp"
 
 class ComponentManager
 {
 	private:
-		static std::array<IComponentArray, MAX_COMPONENTS>	_componentArrays;
+		static std::vector<IComponentArray>			_componentArrays;
 		static Signature					_nextSignature;
 
 		static int	signatureToPosition(Signature signature)
@@ -35,21 +36,45 @@ class ComponentManager
 			return (brandNewSignature);
 		}
 
-	public:
-		template <typename T>
-		static void	addComponent(T *component)
+		static std::vector<IComponentArray>::iterator	binarySearch(std::string name)
 		{
-			// if first time, create component array
-			// then add
-			// delete
+			// binary search in _componentArrays[]
+		}
+
+	public:
+
+		template <typename T>
+		static void	addComponent(Entity entity, T &component, std::string &name) // does it deferenciate automatically?
+		{
+			component._owner = entity;
+			if (addComponent(component, name) == SUCCESS)
+			{
+				return ;
+			}
+			else
+			{
+				ComponentArray	newComponentArray;
+					
+				newComponentArray.init(component, name, getNextSignature());
+				addComponentArray(newComponentArray);
+			}
 		}
 
 		template <typename T>
-		static void	addComponent(T &component)
+		static void	addComponentArray(IComponentArray array)
 		{
-			// if first time, create component array
-			// then add
-			// do not delete
+			// binary search and _componentArrays.insert(iterator, array)
+		}
+
+		template <typename T>
+		static bool	addComponent(T &component, std::string &name)
+		{
+			// binary search and 
+			// if *it.name == name
+			//	ComponentArray::insert(component);
+			//	return (SUCCESS);
+			// else
+			//	return (FAIL);
 		}
 };
 

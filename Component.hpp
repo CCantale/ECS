@@ -3,10 +3,10 @@
 
 typedef struct s_Component
 {
-		Entity		owner;	
-		Signature	signature;
+	Entity		_owner;	
+	Signature	_signature; // This will go eventually
 
-		virtual void		print(void) = 0;
+	virtual void	inspect(void) = 0;
 
 } Component;
 

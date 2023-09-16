@@ -6,7 +6,7 @@
 typedef struct s_Speed : public Component
 {
 	int	speed;
-	void	print(void) override
+	void	inspect(void) override
 	{
 		std::cout << "speed = " << speed << std::endl;
 	}

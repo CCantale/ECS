@@ -19,8 +19,8 @@ int	main(void)
 	Speed			speed;
 
 	std::cout << "Component and array created (Speed)." << std::endl;
-	speed.owner = carl;
-	speed.signature = 1;
+	speed._owner = carl;
+	speed._signature = 1;
 	speed.speed = 300;
 	std::cout << "Component setup done (Speed)." << std::endl;
 
@@ -36,8 +36,8 @@ int	main(void)
 	Name			name;
 
 	std::cout << "Component and array created (Name)." << std::endl;
-	name.owner = carl;
-	name.signature = 2;
+	name._owner = carl;
+	name._signature = 2;
 	name.name = "Carl";
 	std::cout << "Component setup done (Name)." << std::endl;
 	nameArray.insert(name);
@@ -55,8 +55,8 @@ int	main(void)
 
 	Name	bobName;
 
-	bobName.owner = bob;
-	bobName.signature = 2;
+	bobName._owner = bob;
+	bobName._signature = 2;
 	bobName.name = "Bob";
 	nameArray.insert(bobName);
 	std::cout << "Bob's name inserted" << std::endl;
@@ -89,17 +89,17 @@ int	main(void)
 	if (carl != NULL_ENTITY)
 		std::cout << "Carl created." << std::endl;
 
-	aName.owner = bob;
-	aName.signature = 2;
+	aName._owner = bob;
+	aName._signature = 2;
 	aName.name = "Lal";
-	bName.owner = carl;
-	bName.signature = 2;
+	bName._owner = carl;
+	bName._signature = 2;
 	bName.name = "Laaal";
-	cName.owner = carl;
-	cName.signature = 2;
+	cName._owner = carl;
+	cName._signature = 2;
 	cName.name = "Lal";
-	sName.owner = steve;
-	sName.signature = 2;
+	sName._owner = steve;
+	sName._signature = 2;
 	sName.name = "Weeee";
 	EntityManager::setSignature(carl, 2);
 	EntityManager::setSignature(steve, 2);
@@ -131,7 +131,7 @@ int	main(void)
 	std::cout << "CARL" << std::endl;
 	Entity	newGuy = EntityManager::newID();
 	EntityManager::setSignature(newGuy, 2);
-	sName.owner = newGuy;
+	sName._owner = newGuy;
 	sName.name = "NEW";
 	nameArray.insert(sName);
 	std::cout << "Name check:" << std::endl;
@@ -145,8 +145,8 @@ int	main(void)
 	std::cout << "Carl = " << carl << std::endl;
 
 	EntityManager::setSignature(bob, 42);
-	std::cout << "Bob's signature = " << EntityManager::getSignature(bob) << std::endl;
-	std::cout << "Carl's signature = " << EntityManager::getSignature(carl) << std::endl;
+	std::cout << "Bob's _signature = " << EntityManager::getSignature(bob) << std::endl;
+	std::cout << "Carl's _signature = " << EntityManager::getSignature(carl) << std::endl;
 
 	std::cout << "Deleting bob..." << std::endl;
 	EntityManager::deleteID(bob);
