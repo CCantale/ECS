@@ -1,6 +1,7 @@
 #ifndef COMPONENTARRAY_HPP
 # define COMPONENTARRAY_HPP
 
+# include <cstdbool>
 # include <array>
 # include "EntityManager.hpp"
 # include "Component.hpp"
@@ -49,7 +50,7 @@ class ComponentArray : public IComponentArray
 			return (ret + (entity > _array[ret]._owner));
 		}
 
-		short	makeSpace(unsigned int position)
+		bool	makeSpace(unsigned int position)
 		{
 			T		*copy;
 			unsigned int	spaceToMake;
@@ -73,8 +74,6 @@ class ComponentArray : public IComponentArray
 			return (SUCCESS);
 		}
 
-	public:
-
 		void	init(T const &component)
 		{
 			if (_size > 0)
@@ -82,16 +81,19 @@ class ComponentArray : public IComponentArray
 			_array[0] = component;
 			++_size;
 			_signature = component._signature; // gets component's signature. this acquisition method should change in the future
-			_name = component._name;
 		}
 
-		
+	public:
+
 		void	insert(T const &component)
 		{
 			unsigned int	whereToInsert;
 
 			if (_size == 0)
+			{
+				init(component);
 				return ;
+			}
 			whereToInsert = binarySearch(component._owner);
 			if (component._owner != _array[whereToInsert]._owner // check that we didn't already have this entity-component couple
 				&& makeSpace(whereToInsert) == SUCCESS)
@@ -107,7 +109,6 @@ class ComponentArray : public IComponentArray
 
 			whereToErase = binarySearch(entity);
 			whereToErase += MAX_ENTITIES * (_array[whereToErase]._owner != entity); // inhibits the following loop in case the entity was not found
-			std::cout << "WHERE = " << whereToErase << std::endl;
 			for (unsigned int i = whereToErase; i < _size - 1; ++i)
 			{
 				_array[i] = _array[i + 1];
